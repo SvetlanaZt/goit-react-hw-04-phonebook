@@ -1,6 +1,6 @@
 import Form from './Form/form'
 import { nanoid } from 'nanoid'
-import { useState} from 'react';
+import { useState, useEffect} from 'react';
 import Filter from './Filter/filter'
 import Contacts from './Contacts/contacts'
 
@@ -10,9 +10,19 @@ let arrayContacts = [
   { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' }];
 
+const useLocalStorage = (key, value) => {
+    const [state, setState] = useState(() => {
+        return JSON.parse(window.localStorage.getItem(key)) ?? value;
+    })
+    useEffect(() => {
+        window.localStorage.setItem(key, JSON.stringify(state))
+    }, [key, state]);
+
+    return [state, setState]
+}
 
 export function App() {
-  const [contacts, setContacts] = useState(arrayContacts);
+  const [contacts, setContacts] = useLocalStorage('', arrayContacts);
   const [filter, setFilter] = useState('');
 
   const takeData = (evt) => {

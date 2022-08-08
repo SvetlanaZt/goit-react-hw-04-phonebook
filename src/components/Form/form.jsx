@@ -1,23 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid'
 import css from './form.module.css'
+import PropTypes from 'prop-types';
 
 
-const useLocalStorage = (key, value) => {
-    const [state, setState] = useState(() => {
-        return JSON.parse(window.localStorage.getItem(key)) ?? value;
-    })
-    useEffect(() => {
-        window.localStorage.setItem(key, JSON.stringify(state))
-    }, [key, state]);
+// const useLocalStorage = (key, value) => {
+//     const [state, setState] = useState(() => {
+//         return JSON.parse(window.localStorage.getItem(key)) ?? value;
+//     })
+//     useEffect(() => {
+//         window.localStorage.setItem(key, JSON.stringify(state))
+//     }, [key, state]);
 
-    return [state, setState]
-}
+//     return [state, setState]
+// }
 
 
 export default function Form({ onClick }){
-    const [name, setName] = useLocalStorage('name', '');
-    const [number, setNumber] = useLocalStorage('number', '');
+    const [name, setName] = useState('');
+    const [number, setNumber] = useState(+380);
 
     const onSuubmit = evt => {
         evt.preventDefault();
@@ -74,3 +75,7 @@ export default function Form({ onClick }){
       </form>
     )
 }
+
+Form.propTypes = {
+    onClick: PropTypes.func.isRequired,
+};
